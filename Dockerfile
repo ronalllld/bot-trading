@@ -20,5 +20,9 @@ RUN mkdir -p logs data
 # Puerto del dashboard
 EXPOSE 8501
 
-# Comando por defecto: ejecutar el bot
-CMD ["python", "main.py"]
+# Script de inicio
+COPY start.sh .
+RUN chmod +x start.sh
+
+# Iniciar bot y dashboard juntos
+CMD ["./start.sh"]
