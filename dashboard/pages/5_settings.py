@@ -99,8 +99,8 @@ st.subheader("Estado de Conexiones")
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    api_configured = bool(config.KUCOIN_API_KEY)
-    st.markdown(f"**KuCoin API:** {'🟢 Configurada' if api_configured else '🔴 No configurada'}")
+    api_configured = bool(config.BINANCE_API_KEY)
+    st.markdown(f"**Binance API:** {'🟢 Configurada' if api_configured else '🔴 No configurada'}")
 
 with col2:
     tg_configured = bool(config.TELEGRAM_BOT_TOKEN and config.TELEGRAM_CHAT_ID)
