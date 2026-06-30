@@ -1,5 +1,5 @@
 """
-Conexion con el exchange KuCoin usando CCXT
+Conexion con el exchange Binance usando CCXT
 Maneja autenticacion, balance, tickers y ordenes
 """
 
@@ -14,49 +14,46 @@ from config.exchange_config import ExchangeConfig
 
 
 class ExchangeConnector:
-    """Conector principal con KuCoin via CCXT"""
+    """Conector principal con Binance via CCXT"""
 
     def __init__(self, config: Config):
         self.config = config
-        self.exchange: Optional[ccxt.kucoin] = None
+        self.exchange: Optional[ccxt.binance] = None
         self.connected = False
         self._last_request_time = 0
         self._request_interval = 1.0 / ExchangeConfig.MAX_REQUESTS_PER_SECOND
 
     async def connect(self):
-        """Inicializar conexion con KuCoin"""
+        """Inicializar conexion con Binance"""
         try:
             exchange_params = {
-                "apiKey": self.config.KUCOIN_API_KEY,
-                "secret": self.config.KUCOIN_API_SECRET,
-                "password": self.config.KUCOIN_API_PASSPHRASE,
+                "apiKey": self.config.BINANCE_API_KEY,
+                "secret": self.config.BINANCE_API_SECRET,
                 "timeout": ExchangeConfig.REQUEST_TIMEOUT,
                 "enableRateLimit": True,
                 "options": {
                     "defaultType": "spot",
-                    "adjustForTimeDifference": True,
                 },
             }
 
-            # En paper trading no se usa sandbox, se simulan las ordenes
             if self.config.is_paper_mode():
                 logger.info("Modo PAPER TRADING activado (ordenes simuladas)")
 
-            self.exchange = ccxt.kucoin(exchange_params)
+            self.exchange = ccxt.binance(exchange_params)
 
             # Cargar mercados
             await asyncio.to_thread(self.exchange.load_markets)
             self.connected = True
-            logger.info(f"Conectado a KuCoin - Mercados cargados: {len(self.exchange.markets)}")
+            logger.info(f"Conectado a Binance - Mercados cargados: {len(self.exchange.markets)}")
 
         except ccxt.AuthenticationError as e:
-            logger.error(f"Error de autenticacion con KuCoin: {e}")
+            logger.error(f"Error de autenticacion con Binance: {e}")
             raise
         except ccxt.NetworkError as e:
-            logger.error(f"Error de red al conectar con KuCoin: {e}")
+            logger.error(f"Error de red al conectar con Binance: {e}")
             raise
         except Exception as e:
-            logger.error(f"Error al conectar con KuCoin: {e}")
+            logger.error(f"Error al conectar con Binance: {e}")
             raise
 
     async def _rate_limit(self):
@@ -240,4 +237,4 @@ class ExchangeConnector:
             except Exception:
                 pass
             self.connected = False
-            logger.info("Conexion con KuCoin cerrada")
+            logger.info("Conexion con Binance cerrada")

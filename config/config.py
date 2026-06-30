@@ -20,10 +20,9 @@ class Config:
             root = Path(__file__).parent.parent
             load_dotenv(root / ".env")
 
-        # --- KuCoin API ---
-        self.KUCOIN_API_KEY = os.getenv("KUCOIN_API_KEY", "")
-        self.KUCOIN_API_SECRET = os.getenv("KUCOIN_API_SECRET", "")
-        self.KUCOIN_API_PASSPHRASE = os.getenv("KUCOIN_API_PASSPHRASE", "")
+        # --- Binance API ---
+        self.BINANCE_API_KEY = os.getenv("BINANCE_API_KEY", "")
+        self.BINANCE_API_SECRET = os.getenv("BINANCE_API_SECRET", "")
 
         # --- Telegram ---
         self.TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
@@ -66,12 +65,10 @@ class Config:
         errors = []
 
         if self.MODE == "real":
-            if not self.KUCOIN_API_KEY:
-                errors.append("KUCOIN_API_KEY es requerida en modo real")
-            if not self.KUCOIN_API_SECRET:
-                errors.append("KUCOIN_API_SECRET es requerida en modo real")
-            if not self.KUCOIN_API_PASSPHRASE:
-                errors.append("KUCOIN_API_PASSPHRASE es requerida en modo real")
+            if not self.BINANCE_API_KEY:
+                errors.append("BINANCE_API_KEY es requerida en modo real")
+            if not self.BINANCE_API_SECRET:
+                errors.append("BINANCE_API_SECRET es requerida en modo real")
 
         if self.INITIAL_CAPITAL <= 0:
             errors.append("INITIAL_CAPITAL debe ser mayor a 0")

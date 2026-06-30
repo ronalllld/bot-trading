@@ -1,6 +1,6 @@
 """
 Trading Bot Pro - Punto de entrada principal
-Sistema de trading automatizado para KuCoin
+Sistema de trading automatizado para Binance
 """
 
 import asyncio
@@ -47,7 +47,7 @@ class TradingBot:
             # Conectar con exchange
             self.exchange = ExchangeConnector(self.config)
             await self.exchange.connect()
-            logger.info("Conectado a KuCoin")
+            logger.info("Conectado a Binance")
 
             # Verificar balance
             balance = await self.exchange.get_balance()
