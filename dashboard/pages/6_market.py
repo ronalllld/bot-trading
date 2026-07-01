@@ -148,9 +148,9 @@ else:
         return ""
 
     styled = df_display.style \
-        .applymap(color_signal, subset=["Señal"]) \
-        .applymap(color_score, subset=["Score"]) \
-        .applymap(color_rsi, subset=["RSI"])
+        .map(color_signal, subset=["Señal"]) \
+        .map(color_score, subset=["Score"]) \
+        .map(color_rsi, subset=["RSI"])
 
     st.dataframe(styled, use_container_width=True, hide_index=True)
 
