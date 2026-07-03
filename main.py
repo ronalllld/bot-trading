@@ -92,6 +92,7 @@ class TradingBot:
 
         try:
             while self.running:
+                self.config.reload_dynamic()
                 await self.trader.run_cycle()
                 await asyncio.sleep(self.config.SCAN_INTERVAL)
 

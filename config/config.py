@@ -89,6 +89,16 @@ class Config:
 
         return True
 
+    def reload_dynamic(self):
+        """Recargar parametros editables desde user_settings.json (sin reiniciar)"""
+        from config.settings_manager import load_settings
+        s = load_settings(self.DATA_DIR)
+        self.INITIAL_CAPITAL = float(s["INITIAL_CAPITAL"])
+        self.POSITION_SIZE_PERCENTAGE = float(s["POSITION_SIZE_PERCENTAGE"])
+        self.MAX_POSITIONS = int(s["MAX_POSITIONS"])
+        self.TAKE_PROFIT = float(s["TAKE_PROFIT"])
+        self.STOP_LOSS = float(s["STOP_LOSS"])
+
     def is_paper_mode(self) -> bool:
         """Verificar si estamos en modo paper trading"""
         return self.MODE.lower() == "paper"
