@@ -59,6 +59,17 @@ class OrderManager:
             fill_price = order.get("price", price)
             fill_amount = order.get("filled", quantity)
 
+            # Descontar fees del asset base si Binance los cobra en la moneda comprada
+            base_currency = symbol.split("/")[0]
+            fee_info = order.get("fees", []) or []
+            fee_in_base = sum(
+                f.get("cost", 0) for f in fee_info
+                if f.get("currency") == base_currency
+            )
+            if fee_in_base > 0:
+                fill_amount = fill_amount - fee_in_base
+                logger.info(f"Fee descontado: -{fee_in_base:.8f} {base_currency} | Qty neta: {fill_amount:.8f}")
+
             # Calcular niveles de TP/SL
             take_profit_price = fill_price * (1 + self.config.TAKE_PROFIT / 100)
             stop_loss_price = fill_price * (1 - self.config.STOP_LOSS / 100)
@@ -95,6 +106,26 @@ class OrderManager:
         try:
             symbol = trade.symbol
             quantity = trade.quantity
+
+            # Verificar saldo real disponible (puede diferir por comisiones al comprar)
+            base_currency = symbol.split("/")[0]
+            balance = await self.exchange.get_balance()
+            available = balance.get("free", {}).get(base_currency, 0.0)
+            if available > 0 and available < quantity:
+                logger.warning(
+                    f"Saldo real de {base_currency} ({available:.8f}) menor al registrado "
+                    f"({quantity:.8f}). Usando saldo real."
+                )
+                quantity = available
+
+            # Aplicar precision del exchange para evitar errores de lote
+            if self.exchange.exchange and symbol in self.exchange.exchange.markets:
+                quantity = self.exchange.exchange.amount_to_precision(symbol, quantity)
+                quantity = float(quantity)
+
+            if quantity <= 0:
+                logger.error(f"Cantidad a vender invalida: {quantity}")
+                return None
 
             # Ejecutar orden de venta
             order = await self.exchange.create_market_order(symbol, "sell", quantity)
