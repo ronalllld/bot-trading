@@ -1,4 +1,4 @@
-"""
+﻿"""
 Dashboard principal con Streamlit
 Pagina de Overview con metricas generales
 """
@@ -22,7 +22,7 @@ from database.db_manager import DatabaseManager
 # --- Configuracion de la pagina ---
 st.set_page_config(
     page_title="Trading Bot Pro",
-    page_icon="🤖",
+    page_icon="ðŸ¤–",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -41,7 +41,7 @@ db, config = get_db()
 
 def main():
     """Pagina principal - Overview"""
-    st.title("🤖 Trading Bot Pro - Dashboard")
+    st.title("ðŸ¤– Trading Bot Pro - Dashboard")
     st.markdown(f"**Modo:** `{config.MODE}` | **Timeframe:** `{config.TIMEFRAME}` | **Estrategia:** `combined`")
     st.divider()
 
@@ -99,7 +99,7 @@ def main():
                 yaxis_title="Balance (USDT)",
                 template="plotly_dark",
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
         else:
             st.info("Sin datos de balance aun. El bot guardara snapshots periodicamente.")
 
@@ -118,7 +118,7 @@ def main():
                 margin=dict(l=20, r=20, t=20, b=20),
                 template="plotly_dark",
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
         else:
             st.info("Sin trades cerrados aun.")
 
@@ -137,7 +137,7 @@ def main():
                 "Estrategia": t.strategy,
                 "Desde": t.entry_time.strftime("%H:%M:%S") if t.entry_time else "N/A",
             })
-        st.dataframe(pd.DataFrame(data), use_container_width=True, hide_index=True)
+        st.dataframe(pd.DataFrame(data), width='stretch', hide_index=True)
     else:
         st.info("No hay posiciones abiertas")
 
@@ -157,14 +157,14 @@ def main():
                 "Razon": t.exit_reason or "N/A",
                 "Estrategia": t.strategy,
             })
-        st.dataframe(pd.DataFrame(data), use_container_width=True, hide_index=True)
+        st.dataframe(pd.DataFrame(data), width='stretch', hide_index=True)
     else:
         st.info("Sin historial de trades")
 
     # --- Sidebar ---
     with st.sidebar:
         st.header("Control del Bot")
-        st.markdown(f"**Estado:** {'🟢 Activo' if config.MODE else '🔴 Inactivo'}")
+        st.markdown(f"**Estado:** {'ðŸŸ¢ Activo' if config.MODE else 'ðŸ”´ Inactivo'}")
         st.markdown(f"**Capital:** ${config.INITIAL_CAPITAL:.2f}")
         st.markdown(f"**TP:** {config.TAKE_PROFIT}% | **SL:** {config.STOP_LOSS}%")
 
@@ -177,7 +177,7 @@ def main():
         st.markdown(f"- **Avg Loss:** ${stats.get('avg_loss', 0):.4f}")
 
         st.divider()
-        if st.button("🔄 Actualizar", use_container_width=True):
+        if st.button("ðŸ”„ Actualizar", width='stretch'):
             st.rerun()
 
 

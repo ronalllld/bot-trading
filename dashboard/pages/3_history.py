@@ -1,4 +1,4 @@
-"""
+﻿"""
 Pagina de Historial - Todos los trades cerrados
 """
 
@@ -13,7 +13,7 @@ import pandas as pd
 from config.config import Config
 from database.db_manager import DatabaseManager
 
-st.set_page_config(page_title="Historial", page_icon="📜", layout="wide")
+st.set_page_config(page_title="Historial", page_icon="ðŸ“œ", layout="wide")
 
 @st.cache_resource
 def get_db():
@@ -25,7 +25,7 @@ def get_db():
 
 db, config = get_db()
 
-st.title("📜 Historial de Trades")
+st.title("ðŸ“œ Historial de Trades")
 st.divider()
 
 # Obtener trades cerrados
@@ -91,7 +91,7 @@ else:
         yaxis_title="Balance (USDT)",
         template="plotly_dark",
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
     # Tabla de trades
     st.subheader("Detalle de Trades")
@@ -113,16 +113,16 @@ else:
         })
 
     df = pd.DataFrame(data)
-    st.dataframe(df, use_container_width=True, hide_index=True)
+    st.dataframe(df, width='stretch', hide_index=True)
 
     # Boton exportar CSV
     csv = df.to_csv(index=False)
     st.download_button(
-        label="📥 Exportar a CSV",
+        label="ðŸ“¥ Exportar a CSV",
         data=csv,
         file_name="trades_history.csv",
         mime="text/csv",
     )
 
-if st.button("🔄 Actualizar", use_container_width=True):
+if st.button("ðŸ”„ Actualizar", width='stretch'):
     st.rerun()

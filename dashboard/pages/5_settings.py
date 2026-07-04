@@ -36,7 +36,7 @@ with st.form("settings_form"):
             max_value=100000.0,
             value=float(current["INITIAL_CAPITAL"]),
             step=1.0,
-            help="El capital base que el bot usa para calcular el tamaño de cada trade.",
+            help="El capital base que el bot usa para calcular el tamano de cada trade.",
         )
         new_max_pos = st.number_input(
             "Max posiciones simultaneas",
@@ -81,7 +81,7 @@ with st.form("settings_form"):
         st.markdown(f"- Perdida si SL: **-${trade_usdt * new_sl / 100:.2f}**")
         st.markdown(f"- Max invertido: **${trade_usdt * new_max_pos:.2f}** ({new_max_pos} trades)")
 
-    submitted = st.form_submit_button("💾 Guardar cambios", use_container_width=True, type="primary")
+    submitted = st.form_submit_button("Guardar cambios", width="stretch", type="primary")
 
 if submitted:
     new_settings = {
@@ -148,10 +148,10 @@ st.subheader("Estado de Conexiones")
 col1, col2, col3 = st.columns(3)
 with col1:
     api_ok = bool(config.BINANCE_API_KEY)
-    st.markdown(f"**Binance API:** {'🟢 Configurada' if api_ok else '🔴 No configurada'}")
+    st.markdown(f"**Binance API:** {'Configurada' if api_ok else 'No configurada'}")
 with col2:
     tg_ok = bool(config.TELEGRAM_BOT_TOKEN and config.TELEGRAM_CHAT_ID)
-    st.markdown(f"**Telegram:** {'🟢 Configurado' if tg_ok else '🔴 No configurado'}")
+    st.markdown(f"**Telegram:** {'Configurado' if tg_ok else 'No configurado'}")
 with col3:
     email_ok = bool(config.SMTP_USER and config.SMTP_PASSWORD)
-    st.markdown(f"**Email:** {'🟢 Configurado' if email_ok else '🔴 No configurado'}")
+    st.markdown(f"**Email:** {'Configurado' if email_ok else 'No configurado'}")

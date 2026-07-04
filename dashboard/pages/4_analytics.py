@@ -1,4 +1,4 @@
-"""
+﻿"""
 Pagina de Analiticas - Metricas avanzadas de rendimiento
 """
 
@@ -16,7 +16,7 @@ from config.config import Config
 from database.db_manager import DatabaseManager
 from trading.pnl_calculator import PnLCalculator
 
-st.set_page_config(page_title="Analiticas", page_icon="📊", layout="wide")
+st.set_page_config(page_title="Analiticas", page_icon="ðŸ“Š", layout="wide")
 
 @st.cache_resource
 def get_db():
@@ -28,7 +28,7 @@ def get_db():
 
 db, config = get_db()
 
-st.title("📊 Analiticas Avanzadas")
+st.title("ðŸ“Š Analiticas Avanzadas")
 st.divider()
 
 closed_trades = db.get_closed_trades(limit=1000)
@@ -74,7 +74,7 @@ else:
             yaxis_title="P&L (USDT)",
             template="plotly_dark",
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
 
     with col_right:
         st.subheader("Histograma de Retornos (%)")
@@ -89,7 +89,7 @@ else:
             margin=dict(l=20, r=20, t=20, b=20),
             template="plotly_dark",
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
 
     # --- Heatmap de rendimiento por par ---
     st.subheader("Rendimiento por Par")
@@ -116,7 +116,7 @@ else:
         df_pairs = df_pairs.sort_values("P&L Numerico", ascending=False)
         st.dataframe(
             df_pairs[["Par", "Trades", "P&L Total", "Win Rate"]],
-            use_container_width=True, hide_index=True,
+            width='stretch', hide_index=True,
         )
 
     # --- Performance por estrategia ---
@@ -141,7 +141,7 @@ else:
             }
             for s, d in strat_data.items()
         ])
-        st.dataframe(df_strat, use_container_width=True, hide_index=True)
+        st.dataframe(df_strat, width='stretch', hide_index=True)
 
     # --- Metricas detalladas ---
     st.divider()
@@ -169,5 +169,5 @@ else:
         st.markdown(f"- Max DD: {performance.get('max_drawdown', 0):.2f}%")
         st.markdown(f"- Profit Factor: {performance['profit_factor']:.2f}")
 
-if st.button("🔄 Actualizar", use_container_width=True):
+if st.button("ðŸ”„ Actualizar", width='stretch'):
     st.rerun()

@@ -1,4 +1,4 @@
-"""
+﻿"""
 Pagina de Posiciones - Detalle de posiciones abiertas
 """
 
@@ -13,7 +13,7 @@ import pandas as pd
 from config.config import Config
 from database.db_manager import DatabaseManager
 
-st.set_page_config(page_title="Posiciones", page_icon="📈", layout="wide")
+st.set_page_config(page_title="Posiciones", page_icon="ðŸ“ˆ", layout="wide")
 
 @st.cache_resource
 def get_db():
@@ -25,7 +25,7 @@ def get_db():
 
 db, config = get_db()
 
-st.title("📈 Posiciones Activas")
+st.title("ðŸ“ˆ Posiciones Activas")
 st.divider()
 
 open_trades = db.get_open_trades()
@@ -34,7 +34,7 @@ if not open_trades:
     st.info("No hay posiciones abiertas actualmente.")
 else:
     for trade in open_trades:
-        with st.expander(f"📍 {trade.symbol} - Entrada: ${trade.entry_price:.4f}", expanded=True):
+        with st.expander(f"ðŸ“ {trade.symbol} - Entrada: ${trade.entry_price:.4f}", expanded=True):
             col1, col2, col3, col4 = st.columns(4)
 
             with col1:
@@ -70,7 +70,7 @@ else:
                         trade.take_profit * 1.002
                     ]),
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
 
             # Info adicional
             col_a, col_b = st.columns(2)
@@ -95,5 +95,5 @@ with col2:
 with col3:
     st.metric("Posiciones", f"{len(open_trades)}/{config.MAX_POSITIONS}")
 
-if st.button("🔄 Actualizar", use_container_width=True):
+if st.button("ðŸ”„ Actualizar", width='stretch'):
     st.rerun()
