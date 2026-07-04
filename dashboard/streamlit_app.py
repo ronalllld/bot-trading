@@ -22,7 +22,7 @@ from database.db_manager import DatabaseManager
 # --- Configuracion de la pagina ---
 st.set_page_config(
     page_title="Trading Bot Pro",
-    page_icon="ðŸ¤–",
+    page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -41,7 +41,7 @@ db, config = get_db()
 
 def main():
     """Pagina principal - Overview"""
-    st.title("ðŸ¤– Trading Bot Pro - Dashboard")
+    st.title("🤖 Trading Bot Pro - Dashboard")
     st.markdown(f"**Modo:** `{config.MODE}` | **Timeframe:** `{config.TIMEFRAME}` | **Estrategia:** `combined`")
     st.divider()
 
@@ -164,7 +164,7 @@ def main():
     # --- Sidebar ---
     with st.sidebar:
         st.header("Control del Bot")
-        st.markdown(f"**Estado:** {'ðŸŸ¢ Activo' if config.MODE else 'ðŸ”´ Inactivo'}")
+        st.markdown(f"**Estado:** {'🟢 Activo' if config.MODE else '🔴 Inactivo'}")
         st.markdown(f"**Capital:** ${config.INITIAL_CAPITAL:.2f}")
         st.markdown(f"**TP:** {config.TAKE_PROFIT}% | **SL:** {config.STOP_LOSS}%")
 
@@ -177,7 +177,7 @@ def main():
         st.markdown(f"- **Avg Loss:** ${stats.get('avg_loss', 0):.4f}")
 
         st.divider()
-        if st.button("ðŸ”„ Actualizar", width='stretch'):
+        if st.button("🔄 Actualizar", width='stretch'):
             st.rerun()
 
 

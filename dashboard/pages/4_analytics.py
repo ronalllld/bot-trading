@@ -16,7 +16,7 @@ from config.config import Config
 from database.db_manager import DatabaseManager
 from trading.pnl_calculator import PnLCalculator
 
-st.set_page_config(page_title="Analiticas", page_icon="ðŸ“Š", layout="wide")
+st.set_page_config(page_title="Analiticas", page_icon="📊", layout="wide")
 
 @st.cache_resource
 def get_db():
@@ -28,7 +28,7 @@ def get_db():
 
 db, config = get_db()
 
-st.title("ðŸ“Š Analiticas Avanzadas")
+st.title("📊 Analiticas Avanzadas")
 st.divider()
 
 closed_trades = db.get_closed_trades(limit=1000)
@@ -169,5 +169,5 @@ else:
         st.markdown(f"- Max DD: {performance.get('max_drawdown', 0):.2f}%")
         st.markdown(f"- Profit Factor: {performance['profit_factor']:.2f}")
 
-if st.button("ðŸ”„ Actualizar", width='stretch'):
+if st.button("🔄 Actualizar", width='stretch'):
     st.rerun()

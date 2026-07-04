@@ -13,7 +13,7 @@ import pandas as pd
 from config.config import Config
 from database.db_manager import DatabaseManager
 
-st.set_page_config(page_title="Historial", page_icon="ðŸ“œ", layout="wide")
+st.set_page_config(page_title="Historial", page_icon="📜", layout="wide")
 
 @st.cache_resource
 def get_db():
@@ -25,7 +25,7 @@ def get_db():
 
 db, config = get_db()
 
-st.title("ðŸ“œ Historial de Trades")
+st.title("📜 Historial de Trades")
 st.divider()
 
 # Obtener trades cerrados
@@ -118,11 +118,11 @@ else:
     # Boton exportar CSV
     csv = df.to_csv(index=False)
     st.download_button(
-        label="ðŸ“¥ Exportar a CSV",
+        label="📥 Exportar a CSV",
         data=csv,
         file_name="trades_history.csv",
         mime="text/csv",
     )
 
-if st.button("ðŸ”„ Actualizar", width='stretch'):
+if st.button("🔄 Actualizar", width='stretch'):
     st.rerun()

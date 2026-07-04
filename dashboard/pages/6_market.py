@@ -16,9 +16,9 @@ from config.exchange_config import ExchangeConfig
 from analysis.technical_indicators import TechnicalIndicators
 from analysis.signal_generator import SignalGenerator
 
-st.set_page_config(page_title="Mercado en Vivo", page_icon="ðŸ”", layout="wide")
-st.title("ðŸ” Mercado en Vivo")
-st.markdown("Scanner en tiempo real â€” se actualiza cada 30 segundos")
+st.set_page_config(page_title="Mercado en Vivo", page_icon="🔍", layout="wide")
+st.title("🔍 Mercado en Vivo")
+st.markdown("Scanner en tiempo real — se actualiza cada 30 segundos")
 st.divider()
 
 @st.cache_resource
@@ -69,7 +69,7 @@ def scan_market(_timestamp):
                     "BB Lower": round(lower, 4),
                     "BB Upper": round(upper, 4),
                     "Score": round(details.get("buy_score", 0), 3),
-                    "SeÃ±al": signal["action"].upper(),
+                    "Señal": signal["action"].upper(),
                     "_score_num": signal.get("score", 0),
                     "_action": signal["action"],
                 })
@@ -87,7 +87,7 @@ def scan_market(_timestamp):
 # --- Controles ---
 col_refresh, col_info = st.columns([1, 4])
 with col_refresh:
-    if st.button("ðŸ”„ Actualizar ahora", width='stretch'):
+    if st.button("🔄 Actualizar ahora", width='stretch'):
         st.cache_data.clear()
 
 with col_info:
@@ -101,14 +101,14 @@ with st.spinner("Escaneando mercado..."):
 if not results:
     st.warning("No se pudieron obtener datos del mercado.")
 else:
-    # --- SeÃ±ales activas ---
+    # --- Señales activas ---
     buy_signals = [r for r in results if r["_action"] == "buy"]
     sell_signals = [r for r in results if r["_action"] == "sell"]
 
     col1, col2, col3 = st.columns(3)
     col1.metric("Pares escaneados", len(results))
-    col2.metric("SeÃ±ales BUY", len(buy_signals), delta=f"+{len(buy_signals)}" if buy_signals else None)
-    col3.metric("SeÃ±ales SELL", len(sell_signals))
+    col2.metric("Señales BUY", len(buy_signals), delta=f"+{len(buy_signals)}" if buy_signals else None)
+    col3.metric("Señales SELL", len(sell_signals))
 
     st.divider()
 
@@ -123,7 +123,7 @@ else:
         "BB Lower": f"${r['BB Lower']:,.4f}",
         "BB Upper": f"${r['BB Upper']:,.4f}",
         "Score": r["Score"],
-        "SeÃ±al": r["SeÃ±al"],
+        "Señal": r["Señal"],
     } for r in results])
 
     def color_signal(val):
@@ -148,7 +148,7 @@ else:
         return ""
 
     styled = df_display.style \
-        .map(color_signal, subset=["SeÃ±al"]) \
+        .map(color_signal, subset=["Señal"]) \
         .map(color_score, subset=["Score"]) \
         .map(color_rsi, subset=["RSI"])
 
@@ -161,11 +161,11 @@ else:
     for r in results:
         score = r["Score"]
         pct = min(score / 0.70, 1.0)
-        label = f"{r['Par']} â€” Score: {score:.3f}"
+        label = f"{r['Par']} — Score: {score:.3f}"
         if r["_action"] == "buy":
-            label += " ðŸŸ¢ SEÃ‘AL BUY"
+            label += " 🟢 SEÑAL BUY"
         elif r["_action"] == "sell":
-            label += " ðŸ”´ SEÃ‘AL SELL"
+            label += " 🔴 SEÑAL SELL"
 
         col_label, col_bar = st.columns([2, 5])
         with col_label:
