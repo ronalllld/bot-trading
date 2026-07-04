@@ -1,4 +1,4 @@
-﻿"""
+"""
 Dashboard principal con Streamlit
 Pagina de Overview con metricas generales
 """

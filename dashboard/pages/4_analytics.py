@@ -1,4 +1,4 @@
-﻿"""
+"""
 Pagina de Analiticas - Metricas avanzadas de rendimiento
 """
 

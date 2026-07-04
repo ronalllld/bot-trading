@@ -1,4 +1,4 @@
-﻿﻿"""
+"""
 Pagina de Posiciones - Detalle de posiciones abiertas
 """
 

@@ -1,4 +1,4 @@
-﻿"""
+"""
 Pagina de Mercado en Vivo - Scanner de pares en tiempo real
 """
 

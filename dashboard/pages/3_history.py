@@ -1,4 +1,4 @@
-﻿"""
+"""
 Pagina de Historial - Todos los trades cerrados
 """
 
