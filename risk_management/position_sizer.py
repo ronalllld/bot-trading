@@ -20,9 +20,11 @@ class PositionSizer:
         Calcular tamano de posicion usando Fixed Percentage
         Capital: $10 USDT -> 50% = $5 por trade
         """
-        # Porcentaje del balance a invertir
+        # Posicion fija basada en capital inicial, no en saldo restante
+        # Esto permite abrir multiples posiciones simultaneas correctamente
         percentage = self.config.POSITION_SIZE_PERCENTAGE / 100
-        position_usdt = available_balance * percentage
+        position_usdt = self.config.INITIAL_CAPITAL * percentage
+        position_usdt = min(position_usdt, available_balance)
 
         # Verificar minimo del exchange
         min_order = ExchangeConfig.MIN_ORDER_USDT
