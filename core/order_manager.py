@@ -127,6 +127,27 @@ class OrderManager:
                 logger.error(f"Cantidad a vender invalida: {quantity}")
                 return None
 
+            # Verificar notional ANTES de enviar la orden (evita loop infinito con Filter failure: NOTIONAL)
+            # Binance rechaza ordenes cuyo valor sea menor al minimo notional (~$5)
+            ticker = await self.exchange.fetch_ticker(symbol)
+            current_price = ticker.get("last", 0)
+            if current_price > 0:
+                notional_value = quantity * current_price
+                min_notional = ExchangeConfig.MIN_ORDER_USDT
+                if notional_value < min_notional:
+                    logger.warning(
+                        f"Valor de posicion {symbol} (${notional_value:.2f}) por debajo del "
+                        f"minimo notional de Binance (${min_notional:.2f}). "
+                        f"Cerrando en BD — {quantity:.8f} {base_currency} queda como dust en Binance."
+                    )
+                    closed_trade = self.db.close_trade(trade.trade_id, current_price, exit_reason)
+                    if closed_trade:
+                        logger.warning(
+                            f"POSICION CERRADA (dust): {symbol} @ ${current_price:.4f} | "
+                            f"PnL: ${closed_trade.pnl:.4f} ({closed_trade.pnl_percentage:.2f}%)"
+                        )
+                    return closed_trade
+
             # Ejecutar orden de venta
             order = await self.exchange.create_market_order(symbol, "sell", quantity)
             if not order:
@@ -157,6 +178,17 @@ class OrderManager:
             return False
 
         if not Validators.validate_order_size(amount_usdt, ExchangeConfig.MIN_ORDER_USDT):
+            return False
+
+        # Verificar que el valor al SL siga siendo vendible (evita NOTIONAL filter al vender)
+        # Con fees de compra (0.1%) + caida al SL, el valor residual debe superar el minimo notional
+        sl_residual = amount_usdt * (1 - self.config.STOP_LOSS / 100) * 0.999
+        if sl_residual < ExchangeConfig.MIN_ORDER_USDT:
+            logger.warning(
+                f"Posicion de ${amount_usdt:.2f} caeria a ${sl_residual:.2f} en SL "
+                f"(por debajo del minimo notional ${ExchangeConfig.MIN_ORDER_USDT}). "
+                f"Aumenta el capital inicial en el dashboard para operar correctamente."
+            )
             return False
 
         open_trades = self.db.get_open_trades()
